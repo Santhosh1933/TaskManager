@@ -79,29 +79,8 @@ app.post("/Tasks", async (req, res) => {
 
 app.get("/Tasks", async (req, res) => {
   try {
-    const {
-      userId,
-      title,
-      description,
-      subTasks,
-      status,
-      deadLine,
-      priority,
-      assignees,
-      comments,
-    } = req.body;
-    const data = await Tasks.create({
-      userId,
-      title,
-      description,
-      subTasks,
-      status,
-      deadLine,
-      priority,
-      assignees,
-      comments,
-    });
-    await data.save();
+    const userId = req.query;
+    const data = await Tasks.find({ userId: userId });
     await res.send(data).status(200);
   } catch (error) {
     res.send(error).status(501);

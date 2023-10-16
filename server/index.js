@@ -77,12 +77,41 @@ app.post("/Tasks", async (req, res) => {
   }
 });
 
+// Get Task
 app.get("/Tasks", async (req, res) => {
   try {
-    const userId = req.query;
+    const { userId } = req.query;
     const data = await Tasks.find({ userId: userId });
     await res.send(data).status(200);
   } catch (error) {
     res.send(error).status(501);
+  }
+});
+
+// get individual user
+app.get("/users", async (req, res) => {
+  try {
+    const { userId } = req.query;
+    const data = await Users.find({ _id: userId });
+    await res.send(data).status(200);
+  } catch (error) {
+    res.send(error).status(501);
+  }
+});
+
+//
+app.get("/assignees", async (req, res) => {
+  try {
+    const { userId } = req.query;
+
+    console.log(userId);
+
+    const data = await Tasks.find({
+      assignees:new mongoose.Types.ObjectId(userId),
+    });
+
+    res.status(200).send(data);
+  } catch (error) {
+    res.status(500).send(error);
   }
 });
